@@ -1,0 +1,15 @@
+.fc-timegrid-event-harness-inset .fc-timegrid-event {
+  border: none;
+}
+.fc-timegrid-event .fc-event-main {
+  padding: 10px 10px 0;
+}
+.fc-event-main {
+  background-color: var(--color-primary);
+  color: var(--color-black);
+}
+.fc-event-main-frame {
+  font-size: var(--font-size-md);
+  color: var(--color-black);
+  gap: 10px;
+}

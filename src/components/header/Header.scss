@@ -1,0 +1,35 @@
+.logo {
+  display: block;
+  font-size: var(--font-size-xxl)
+}
+.btn-today {
+  text-align-last: center;
+  border: 2.5px solid var(--color-primary);
+  color: var(--color-black);
+  border-radius: 30px;
+  font-size: var(--font-size-lg);
+  padding: 10px 30px;
+}
+.arrow-box {
+  display: flex;
+  gap: 10px;
+  margin-left: auto;
+}
+.left,
+.right {
+  display: block;
+  width: 50px;
+  height: 50px;
+}
+.select-box {
+  text-align-last: center;
+  background-color: var(--color-primary);
+  color: var(--color-black);
+  border-radius: 30px;
+  font-size: var(--font-size-lg);
+  padding: 10px 30px;
+
+  option {
+    background-color: var(--color-white);
+  }
+}

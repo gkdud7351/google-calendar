@@ -1,0 +1,37 @@
+.app-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-layout {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+
+.side-calendar {
+  width: 350px;
+  min-width: 250px;
+  max-width: 400px;
+  overflow-x: hidden;
+  padding: 1rem;;
+
+  .rdp {
+    width: 100%;
+    font-size: 0.875rem;
+  }
+}
+.google-calendar {
+  flex: 1;
+  padding: 1rem;
+  background-color: var(--color-white)
+}
+
+header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  padding: 1rem;
+}

@@ -1,0 +1,17 @@
+.has-event {
+  background-color: var(--color-tertiary);
+  border-radius: 50%;
+}
+.today {
+  background-color: var(--color-primary);
+  border-radius: 50%;
+  color: var(--color-white)
+}
+.rdp-selected .rdp-day_button {
+  border: none;
+  box-shadow: inset 0 0 0 2px var(--color-primary);
+  border-radius: 50%;
+}
+.rdp-chevron {
+  fill: var(--color-black);
+}
