@@ -13,7 +13,7 @@ const Modal = ({ start, onClose, onConfirm }:ModalProps) => {
   const [endTime, setEndTime] = useState("")
 
    function formatTime(date: Date): string {
-    return date.toTimeString().slice(0, 5); // "HH:mm"
+    return date.toTimeString().slice(0, 5);
   }
 
   function formatKoreanDate(date: Date): string {
