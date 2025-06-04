@@ -1,6 +1,17 @@
+header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  padding: 1rem;
+}
 .logo {
   display: block;
-  font-size: var(--font-size-xxl)
+  font-size: var(--font-size-xl);
+  margin-right: 350px;
+}
+.current {
+  font-size: var(--font-size-xl)
 }
 .btn-today {
   text-align-last: center;

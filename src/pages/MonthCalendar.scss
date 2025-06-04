@@ -1,0 +1,7 @@
+.fc-daygrid-event-dot {
+  border: calc(var(--fc-daygrid-event-dot-width) / 2) solid var(--color-primary);
+}
+.fc-event-title,
+.fc-event-time {
+  font-size: var(--font-size-sm);
+}

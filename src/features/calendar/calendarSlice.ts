@@ -22,9 +22,15 @@ const calendarSlice = createSlice({
     },
     moveWeek(state, action:PayloadAction<'prev'|'next'>) {
       const delta = action.payload === 'prev' ? -7 : 7
-      const newDate = new Date(state.selectedDate)
-      newDate.setDate(newDate.getDate() + delta)
-      state.selectedDate = newDate
+      const current = new Date(state.selectedDate)
+      current.setDate(current.getDate() + delta)  //setDate()는 기존 날짜 객체의 일만 변경하면서 월/연도도 자동으로 보정해줌
+      state.selectedDate = current
+    },
+    moveMonth(state, action:PayloadAction<'prev'|'next'>) {
+      const current = new Date(state.selectedDate);
+      const delta = action.payload === 'prev' ? -1 : 1;
+      const newDate = new Date(current.getFullYear(), current.getMonth() + delta, 1);
+      state.selectedDate = newDate;
     },
     setPageMode(state, action:PayloadAction<'weekly'|'monthly'>) {
       state.pageMode = action.payload
@@ -38,5 +44,5 @@ const calendarSlice = createSlice({
   }
 })
 
-export const { setSelectedDate, moveWeek, setPageMode, addEvent, deleteEvent } = calendarSlice.actions;
+export const { setSelectedDate, moveWeek, moveMonth, setPageMode, addEvent, deleteEvent } = calendarSlice.actions;
 export default calendarSlice.reducer;
