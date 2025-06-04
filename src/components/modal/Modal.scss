@@ -1,3 +1,4 @@
+@import '../../styles/utils';
 .modal-container {
   position: fixed;
   top: 0;
@@ -16,9 +17,10 @@
   flex-direction: column;
   gap: 24px;
   padding: 20px 20px;
+  margin: 0 20px;
   background-color: var(--color-white);
   border-radius: 12px;
-   text-align: center;
+  text-align: center;
 
   .title-input {
     height: 50px;
@@ -35,6 +37,9 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
+  @include mobile {
+    font-size: var(--font-size-xs);
+  }
 }
 
 .start, .end {

@@ -20,7 +20,7 @@ const SideCalendar = () => {
   );
 
   return (
-    <>
+    <div className="side-calendar">
       <DayPicker
         animate
         locale={ko}
@@ -41,7 +41,7 @@ const SideCalendar = () => {
           currentSelected: 'selected'
         }}
       />
-    </>
+    </div>
   )
 }
 export default SideCalendar

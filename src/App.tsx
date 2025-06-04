@@ -1,5 +1,5 @@
 import './App.scss';
-import './styles/main.scss'
+import './styles/main.scss';
 import GoogleCalendar from './components/googleCalendar/GoogleCalendar';
 import SideCalendar from './components/sideCalendar/SideCalendar';
 import Header from './components/header/Header';
@@ -9,12 +9,8 @@ function App() {
     <div className="app-container">
       <Header/>
       <div className="main-layout">
-        <div className="side-calendar">
-          <SideCalendar />
-        </div>
-        <div className="google-calendar">
-          <GoogleCalendar />
-        </div>
+        <SideCalendar />
+        <GoogleCalendar />
       </div>
     </div>
   );

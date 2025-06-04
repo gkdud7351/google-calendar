@@ -35,7 +35,7 @@ const MonthCalendar = () => {
 
   const handleConfirm = (title: string, start: Date, end: Date) => {
     if (!selectedStart || !title) return;
-    
+
     dispatch(
       addEvent({
         id: String(Date.now()),

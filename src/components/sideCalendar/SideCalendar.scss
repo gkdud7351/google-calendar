@@ -1,3 +1,14 @@
+@import '../../styles/utils';
+.side-calendar {
+  min-width: 250px;
+  overflow-x: hidden;
+  padding: 1rem;;
+
+  .rdp {
+    width: 100%;
+    font-size: 0.875rem;
+  }
+}
 .has-event {
   background-color: var(--color-tertiary);
   border-radius: 50%;
@@ -14,4 +25,9 @@
 }
 .rdp-chevron {
   fill: var(--color-black);
+}
+@include mobile {
+  .rdp-months {
+    margin: auto;
+  }
 }

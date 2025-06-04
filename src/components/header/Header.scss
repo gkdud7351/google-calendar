@@ -1,5 +1,7 @@
+@import '../../styles/_utils.scss';
 header {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-start;
   align-items: center;
   gap: 10px;
@@ -8,7 +10,6 @@ header {
 .logo {
   display: block;
   font-size: var(--font-size-xl);
-  margin-right: 350px;
 }
 .current {
   font-size: var(--font-size-xl)
@@ -42,5 +43,19 @@ header {
 
   option {
     background-color: var(--color-white);
+  }
+}
+@include mobile {
+  header {
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  .btn-today,
+  .select-box {
+    padding: 6px 16px;
+    font-size: var(--font-size-sm);
+  }
+  .arrow-box {
+    display: none;
   }
 }

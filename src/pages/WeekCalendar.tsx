@@ -1,4 +1,4 @@
-import {  useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { useRef, useEffect, useState } from 'react';
 import { addEvent, deleteEvent } from '../features/calendar/calendarSlice';
@@ -66,6 +66,7 @@ const WeekCalendar = () => {
         eventClick={handleEventClick}
         dateClick={handleDateClick}
         initialView="timeGridWeek"
+        height='auto'
         initialDate={selectedDate}
         headerToolbar={false}
       />
