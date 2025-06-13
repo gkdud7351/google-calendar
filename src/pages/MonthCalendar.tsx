@@ -1,36 +1,58 @@
-import {  useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store/store';
-import { useEffect, useRef, useState } from 'react';
-import { addEvent, deleteEvent } from '../features/calendar/calendarSlice';
-import { EventClickArg } from '@fullcalendar/core';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import koLocale from '@fullcalendar/core/locales/ko';
-import interactionPlugin from '@fullcalendar/interaction';
-import Modal from "../components/modal/Modal"
-import './MonthCalendar.scss'
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store/store";
+import { useEffect, useRef, useState } from "react";
+import { addEvent, deleteEvent } from "../features/calendar/calendarSlice";
+import { EventClickArg } from "@fullcalendar/core";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import koLocale from "@fullcalendar/core/locales/ko";
+import interactionPlugin from "@fullcalendar/interaction";
+import Modal from "../components/modal/Modal";
+import InfoModal from "../components/modal/InfoModal";
+import "./MonthCalendar.scss";
 
 const MonthCalendar = () => {
   const dispatch = useDispatch();
   const calendarRef = useRef<FullCalendar | null>(null);
-  const selectedDate = useSelector((state: RootState) => state.calendar.selectedDate);
+  const selectedDate = useSelector(
+    (state: RootState) => state.calendar.selectedDate
+  );
   const events = useSelector((state: RootState) => state.calendar.events);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedStart, setSelectedStart] = useState<Date | null>(null);
-  
+  const [infoModal, setInfoModal] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<{
+    id: string;
+    title: string;
+    start: Date;
+    end: Date;
+  } | null>(null);
+  const [modalPosition, setModalPosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
+
   const handleDateClick = (arg: { date: Date }) => {
     setSelectedStart(arg.date);
     setModalOpen(true);
   };
 
-
   const handleEventClick = (clickInfo: EventClickArg) => {
-    const title = clickInfo.event.title;
-    const id = clickInfo.event.id;
+    const rect = clickInfo.el.getBoundingClientRect();
 
-    if (window.confirm(`'${title}' 일정을 삭제할까요?`)) {
-      dispatch(deleteEvent(id));
-    }
+    setSelectedEvent({
+      id: clickInfo.event.id,
+      title: clickInfo.event.title,
+      start: clickInfo.event.start!,
+      end: clickInfo.event.end!,
+    });
+
+    setModalPosition({
+      x: rect.right + window.scrollX,
+      y: rect.top + window.scrollY,
+    });
+
+    setInfoModal(true);
   };
 
   const handleConfirm = (title: string, start: Date, end: Date) => {
@@ -42,7 +64,7 @@ const MonthCalendar = () => {
         title,
         start,
         end,
-        allDay: false
+        allDay: true,
       })
     );
     setModalOpen(false);
@@ -62,7 +84,7 @@ const MonthCalendar = () => {
       <FullCalendar
         locale={koLocale}
         ref={calendarRef}
-        plugins={[ dayGridPlugin,interactionPlugin ]}
+        plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         events={events}
         eventClick={handleEventClick}
@@ -78,7 +100,27 @@ const MonthCalendar = () => {
           onConfirm={handleConfirm}
         />
       )}
+
+      {infoModal && selectedEvent && modalPosition && (
+        <InfoModal
+          event={selectedEvent}
+          onClose={() => setInfoModal(false)}
+          onEdit={(event) => {
+            // 필요시 수정용 Modal 띄우거나 편집 처리
+          }}
+          onDelete={(id) => {
+            dispatch(deleteEvent(id));
+            setInfoModal(false);
+          }}
+          style={{
+            position: "absolute",
+            top: modalPosition.y,
+            left: modalPosition.x,
+            zIndex: 9999,
+          }}
+        />
+      )}
     </>
-  )
-}
-export default MonthCalendar
+  );
+};
+export default MonthCalendar;
