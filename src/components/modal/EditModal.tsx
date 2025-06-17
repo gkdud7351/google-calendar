@@ -23,7 +23,9 @@ const EditModal = ({ event, onClose, onConfirm, style }: EditModalProps) => {
   const [title, setTitle] = useState(event.title);
   const [startDate, setStartDate] = useState(() => formatDate(event.start));
   const [startTime, setStartTime] = useState(() => formatTime(event.start));
-  const [endDate, setEndDate] = useState(() => formatDate(event.end));
+  const [endDate, setEndDate] = useState(() =>
+    mode === "monthly" ? formatDate(event.end) : ""
+  );
   const [endTime, setEndTime] = useState(() => formatTime(event.end));
   const [endDateIsNextDay, setEndDateIsNextDay] = useState(false);
 
@@ -43,6 +45,12 @@ const EditModal = ({ event, onClose, onConfirm, style }: EditModalProps) => {
       weekday: "long",
     });
   }
+  // 수정 시 end 달력 하루 전날로 선택되어 있게 하는 함수
+  function dateminus(date: string) {
+    const adjusted = new Date(date);
+    adjusted.setDate(adjusted.getDate() - 1);
+    return adjusted;
+  }
   useEffect(() => {
     // 1. 날짜 계산은 항상 수행
     if (startTime && endTime) {
@@ -61,30 +69,31 @@ const EditModal = ({ event, onClose, onConfirm, style }: EditModalProps) => {
   }, [title, startTime, endTime]);
 
   const handleSubmit = () => {
-    if (!title || !startTime || !endTime) return;
-
     const start = new Date(startDate);
-    const [sh, sm] = startTime.split(":").map(Number);
-    const [eh, em] = endTime.split(":").map(Number);
-    start.setHours(sh, sm);
     let end: Date;
+
     if (mode === "weekly") {
+      const [sh, sm] = startTime.split(":").map(Number);
+      const [eh, em] = endTime.split(":").map(Number);
+      start.setHours(sh, sm);
       end = new Date(startDate);
       end.setHours(eh, em);
       if (eh < sh || (eh === sh && em <= sm)) {
         end.setDate(end.getDate() + 1);
       }
     } else {
-      end = new Date(startDate);
-      end.setHours(eh, em);
+      end = new Date(endDate);
+      end.setDate(end.getDate() + 1);
     }
     onConfirm({
       id: event.id,
       title,
       start,
       end,
+      allDay: event.allDay,
     });
   };
+
   return (
     <div className="editModal-container">
       <div className="editModal" style={style}>
@@ -134,30 +143,11 @@ const EditModal = ({ event, onClose, onConfirm, style }: EditModalProps) => {
               onChange={(e) => setStartDate(e.target.value)}
             />
             <input
-              className="start-time"
-              type="time"
-              value={startTime}
-              onChange={(e) => setStartTime(e.target.value)}
-            />
-            <input
               className="end-date"
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
             />
-            <input
-              className="end-time"
-              type="time"
-              value={endTime}
-              onChange={(e) => setEndTime(e.target.value)}
-            />
-            {endDateIsNextDay && (
-              <div className="date-display">
-                {formatKoreanDate(
-                  new Date(new Date(startDate).getTime() + 86400000)
-                )}
-              </div>
-            )}
           </div>
         )}
 

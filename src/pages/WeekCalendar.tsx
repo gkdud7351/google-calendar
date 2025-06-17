@@ -152,8 +152,9 @@ const WeekCalendar = () => {
           }
           style={{
             position: "absolute",
-            top: modalPosition.y,
-            left: modalPosition.x,
+            top: modalPosition.y - 10,
+            left: modalPosition.x - 10,
+            transform: "translateX(-100%)",
             zIndex: 9999,
           }}
         />
