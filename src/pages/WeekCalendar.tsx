@@ -1,7 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { useRef, useEffect, useState } from "react";
-import { addEvent, deleteEvent } from "../features/calendar/calendarSlice";
+import {
+  addEvent,
+  deleteEvent,
+  updateEvent,
+} from "../features/calendar/calendarSlice";
 import { EventClickArg } from "@fullcalendar/core";
 import { DateClickArg } from "@fullcalendar/interaction";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -11,6 +15,7 @@ import koLocale from "@fullcalendar/core/locales/ko";
 import Modal from "../components/modal/Modal";
 import InfoModal from "../components/modal/InfoModal";
 import "./WeekCalendar.scss";
+import EditModal from "../components/modal/EditModal";
 
 const WeekCalendar = () => {
   const dispatch = useDispatch();
@@ -20,7 +25,7 @@ const WeekCalendar = () => {
   );
   const events = useSelector((state: RootState) => state.calendar.events);
   const [modalOpen, setModalOpen] = useState(false);
-  const [infoModal, setInfoModal] = useState(false);
+  const [modalMode, setModalMode] = useState<"info" | "edit" | null>(null);
   const [selectedStart, setSelectedStart] = useState<Date | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<{
     id: string;
@@ -49,11 +54,10 @@ const WeekCalendar = () => {
     });
 
     setModalPosition({
-      x: rect.right + window.scrollX,
+      x: rect.left + window.scrollX,
       y: rect.top + window.scrollY,
     });
-
-    setInfoModal(true);
+    setModalMode("info");
   };
 
   const handleConfirm = (title: string, start: Date, end: Date) => {
@@ -69,6 +73,19 @@ const WeekCalendar = () => {
 
     setModalOpen(false);
     setSelectedStart(null);
+  };
+  const handleEdit = (id: string, title: string, start: Date, end: Date) => {
+    dispatch(
+      updateEvent({
+        id,
+        title,
+        start,
+        end,
+        allDay: false,
+      })
+    );
+    setModalMode(null);
+    setSelectedEvent(null);
   };
 
   // selectedDate가 바뀌면 캘린더 이동
@@ -102,17 +119,37 @@ const WeekCalendar = () => {
         />
       )}
 
-      {infoModal && selectedEvent && modalPosition && (
+      {modalMode === "info" && selectedEvent && modalPosition && (
         <InfoModal
           event={selectedEvent}
-          onClose={() => setInfoModal(false)}
-          onEdit={(event) => {
-            // 필요시 수정용 Modal 띄우거나 편집 처리
-          }}
+          onClose={() => setModalMode(null)}
+          onEdit={() => setModalMode("edit")}
           onDelete={(id) => {
             dispatch(deleteEvent(id));
-            setInfoModal(false);
+            setModalMode(null);
           }}
+          style={{
+            position: "absolute",
+            top: modalPosition.y - 10,
+            left: modalPosition.x - 10,
+            transform: "translateX(-100%)",
+            zIndex: 9999,
+          }}
+        />
+      )}
+
+      {modalMode === "edit" && selectedEvent && modalPosition && (
+        <EditModal
+          event={selectedEvent}
+          onClose={() => setModalMode(null)}
+          onConfirm={(updatedEvent) =>
+            handleEdit(
+              updatedEvent.id,
+              updatedEvent.title,
+              updatedEvent.start,
+              updatedEvent.end
+            )
+          }
           style={{
             position: "absolute",
             top: modalPosition.y,

@@ -6,35 +6,39 @@ import "./Modal.scss";
 type ModalProps = {
   start: Date;
   onClose: () => void;
-  onConfirm: (title: string, start: Date, end: Date) => void;
+  onConfirm: (title: string, start: Date, end: Date, allDay: boolean) => void;
 };
 
 const Modal = ({ start, onClose, onConfirm }: ModalProps) => {
   const mode = useSelector((state: RootState) => state.calendar.pageMode);
   const [title, setTitle] = useState("");
-  const [startTime, setStartTime] = useState(() => formatTime(start));
+  const [startTime, setStartTime] = useState(() =>
+    mode === "weekly" ? formatTime(start) : ""
+  );
   const [endTime, setEndTime] = useState("");
-  const [endDate, setEndDate] = useState<Date>(new Date(start));
+  const [endDate, setEndDate] = useState(start);
   const [isValid, setIsValid] = useState(false);
   const [endDateIsNextDay, setEndDateIsNextDay] = useState(false);
 
-  function formatTime(date: Date): string {
+  // time만 뽑는 함수
+  function formatTime(date: Date) {
     return date.toTimeString().slice(0, 5);
   }
-
-  function formatKoreanDate(date: Date): string {
+  // date만 뽑는 함수
+  function formatDate(date: Date) {
+    return date.toLocaleDateString("sv-SE");
+  }
+  // 월,일,요일
+  function formatKoreanDate(date: Date) {
     return date.toLocaleDateString("ko-KR", {
       month: "long",
       day: "numeric",
       weekday: "long",
     });
   }
-  function formatDateInput(date: Date): string {
-    return date.toISOString().split("T")[0];
-  }
 
   useEffect(() => {
-    // 1. 날짜 계산은 항상 수행
+    // 날짜 계산은 항상 수행
     if (startTime && endTime) {
       const [sh, sm] = startTime.split(":").map(Number);
       const [eh, em] = endTime.split(":").map(Number);
@@ -45,23 +49,25 @@ const Modal = ({ start, onClose, onConfirm }: ModalProps) => {
       setEndDateIsNextDay(false);
     }
 
-    // 2. 유효성 검사는 title 포함
-    const isFilled = !!(title.trim() && startTime && endTime);
-    setIsValid(isFilled);
-  }, [title, startTime, endTime]);
+    // 유효성 검사는 title 포함
+    if (mode === "weekly") {
+      const isFilled = !!(title.trim() && startTime && endTime);
+      setIsValid(isFilled);
+    } else if (mode === "monthly") {
+      const isFilled = !!(title.trim() && endDate);
+      setIsValid(isFilled);
+    }
+  }, [mode, title, startTime, endTime, endDate]);
 
   const handleSubmit = () => {
-    if (!title || !startTime || !endTime) return;
-
-    const [sh, sm] = startTime.split(":").map(Number);
-    const [eh, em] = endTime.split(":").map(Number);
-
     const startDate = new Date(start);
-    startDate.setHours(sh, sm);
-
     let computedEnd: Date;
 
     if (mode === "weekly") {
+      const [sh, sm] = startTime.split(":").map(Number);
+      const [eh, em] = endTime.split(":").map(Number);
+
+      startDate.setHours(sh, sm);
       computedEnd = new Date(start);
       computedEnd.setHours(eh, em);
       if (eh < sh || (eh === sh && em <= sm)) {
@@ -69,10 +75,10 @@ const Modal = ({ start, onClose, onConfirm }: ModalProps) => {
       }
     } else {
       computedEnd = new Date(endDate);
-      computedEnd.setHours(eh, em);
+      computedEnd.setDate(computedEnd.getDate() + 1);
     }
 
-    onConfirm(title, startDate, computedEnd);
+    onConfirm(title, startDate, computedEnd, mode === "monthly");
   };
 
   return (
@@ -113,23 +119,10 @@ const Modal = ({ start, onClose, onConfirm }: ModalProps) => {
           <div className="time-row">
             <div className="date-display">{formatKoreanDate(start)}</div>
             <input
-              className="start"
-              type="time"
-              value={startTime}
-              onChange={(e) => setStartTime(e.target.value)}
-            />
-            <input
               className="end-date"
               type="date"
-              value={formatDateInput(endDate)}
+              value={formatDate(endDate)}
               onChange={(e) => setEndDate(new Date(e.target.value))}
-            />
-
-            <input
-              className="end-time"
-              type="time"
-              value={endTime}
-              onChange={(e) => setEndTime(e.target.value)}
             />
           </div>
         )}

@@ -22,18 +22,27 @@
   border-radius: 12px;
   text-align: center;
   min-width: 400px;
-
-  .title-input {
-    height: 50px;
-    border-bottom: 3px solid var(--color-primary);
-  }
+}
+.title-input {
+  height: 50px;
+  border-bottom: 3px solid var(--color-primary);
 }
 .modal-header {
   display: flex;
   margin-left: auto;
 }
 
-.info-modal {
+.infoModal {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 20px 20px;
+  background-color: var(--color-white);
+  border-radius: 12px;
+  text-align: center;
+  min-width: 400px;
+}
+.editModal {
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -44,13 +53,15 @@
   min-width: 400px;
 }
 
-.infoModal-header {
+.infoModal-header,
+.editModal-header {
   display: flex;
   gap: 20px;
   margin-left: auto;
 }
 
-.info {
+.info,
+.edit {
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -72,7 +83,7 @@
   }
 }
 
-.start,
+.start-time,
 .end-time {
   padding: 10px;
   background-color: var(--color-gray-3);
