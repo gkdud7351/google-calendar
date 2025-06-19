@@ -45,12 +45,7 @@ const EditModal = ({ event, onClose, onConfirm, style }: EditModalProps) => {
       weekday: "long",
     });
   }
-  // 수정 시 end 달력 하루 전날로 선택되어 있게 하는 함수
-  function dateminus(date: string) {
-    const adjusted = new Date(date);
-    adjusted.setDate(adjusted.getDate() - 1);
-    return adjusted;
-  }
+
   useEffect(() => {
     // 1. 날짜 계산은 항상 수행
     if (startTime && endTime) {

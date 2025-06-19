@@ -50,13 +50,13 @@ header {
     left: 0;
     width: 100%;
     background-color: var(--color-primary);
-    border-radius: 0 0 20px 20px;
+    border-radius: 10px;
     overflow: hidden;
     z-index: 10;
 
     .option {
       padding: 10px 30px;
-      color: var(--color-black);
+      color: var(--color-white);
       &:hover {
         background-color: var(--color-accent);
       }
