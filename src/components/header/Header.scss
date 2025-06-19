@@ -1,4 +1,4 @@
-@import '../../styles/_utils.scss';
+@import "../../styles/_utils.scss";
 header {
   display: flex;
   flex-wrap: wrap;
@@ -12,11 +12,11 @@ header {
   font-size: var(--font-size-xl);
 }
 .current {
-  font-size: var(--font-size-xl)
+  font-size: var(--font-size-xl);
 }
 .btn-today {
   text-align-last: center;
-  border: 2.5px solid var(--color-primary);
+  border: 1px solid var(--color-primary);
   color: var(--color-black);
   border-radius: 30px;
   font-size: var(--font-size-lg);
@@ -34,15 +34,33 @@ header {
   height: 50px;
 }
 .select-box {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
   text-align-last: center;
-  background-color: var(--color-primary);
+  border: 1px solid var(--color-primary);
   color: var(--color-black);
   border-radius: 30px;
   font-size: var(--font-size-lg);
   padding: 10px 30px;
 
-  option {
-    background-color: var(--color-white);
+  .options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--color-primary);
+    border-radius: 0 0 20px 20px;
+    overflow: hidden;
+    z-index: 10;
+
+    .option {
+      padding: 10px 30px;
+      color: var(--color-black);
+      &:hover {
+        background-color: var(--color-accent);
+      }
+    }
   }
 }
 @include mobile {
