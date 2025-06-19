@@ -9,9 +9,9 @@
 
 :root {
   /* Primary */
-  --color-primary: #f5da7f;
+  --color-primary: #ff4e95;
   --color-secondary: #c7db7e;
-  --color-tertiary: #fff4d0;
+  --color-tertiary: #f8e2eb;
 
   /* Text Color */
   --color-black: #333;
@@ -36,7 +36,6 @@
   box-sizing: border-box;
 }
 
-
 body {
   padding: 0;
   font-family: "SUIT-Regular", sans-serif;
@@ -47,7 +46,6 @@ body {
     flex-direction: column;
   }
 }
-
 
 h1,
 h2,
